@@ -403,4 +403,44 @@ to generate the sequence numbers.
 Use the web to find a description of it,
 and work with a partner to ensure that you understand how it works.
 
+## Promises
+
+- start with example e.g. requesting datafile from server with `fetch`
+  - show how you can slip up if not aware of asynchronous execution
+
+- asynchronous execution: one of biggest differences between JS and the language that you're familiar with
+- the JS engine sets processes running as it reads through the script, but doesn't necessarily wait for each to finish before moving onto the next line
+    - prefers to use the processor for other pending tasks while waiting for other parts of your system (e.g. memory) to be ready for the next processing task
+- for the unaware, this can cause unexpected behaviour and associated confusion
+    - e.g. above `fetch` function makes request to server for a webpage and returns when server responds, not when requested page has been downloaded
+    - problematic when following code relies on that data being available
+- how do you deal with this?
+    - could write waiting into your program but how to predict time? could vary according to network speed, size of dataset/file, other factors
+    - anyway, not a very elegant or efficient solution
+- `Promises` provides an answer
+- use `Promises` to 'queue up' code for execution once a task has been completed
+- a few things to understand in the syntax
+- `resolve` and `reject` have special meaning
+    - allow you to define different paths to take out of function based on success or failure
+    - e.g. did `fetch` return 200? great, `resolve`. 404? `reject` and throw error/prompt for corrected URI
+- use `resolve(some_value)` and `reject(some_error)` to return value or error depending on outcome of promise
+- `then` and `catch` methods can be used to define what happens after a promise resolves or rejects - 'consuming' functions
+- `then` expects one or two arguments, both functions
+    1. what to do with whatever was returned with `resolve`
+    2. optionally, what to do with the error
+- `catch` expects a single function, defining what to do with the error returned with `reject`
+    - a single `catch` can be used to apply to several `then`s - when a chain of `then`s is broken by an error being thrown, that error will be fed into the next `catch` found.
+- `Promise.all(iterable)` takes an iterable of Promises and resolves when they have all completed, returning an array of the results
+    - results can be from the success (`resolve`) or failure (`reject`) of each Promise
+- `Promise.race(iterable)` is similar but returns the result of the first promise to finish (regardless of whether it succeeded or failed)
+
+## `async`/`await`
+
+- a way to work with promises without endless `then`s
+- use `async` when defining function to mark it as asynchronous
+    - will return a promise
+- can use `await` inside the `async` function to wait for a promise to complete and collect the result
+- saves you from running another `.then` to work with output of a promise
+- if you need to `await`multiple promises before continuing, remember to use `Promise.all()`
+
 {% include links.md %}
