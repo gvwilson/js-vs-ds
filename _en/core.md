@@ -40,12 +40,6 @@ keypoints:
 - "Paths beginning with '.' or '/' are imported locally, but paths without '.' or '/' look in the library."
 ---
 
-> **Goals**
-> - Introduce enough of JavaScript's core features to get started
-> - Experiment with these interactively in the Node interpreter
-> - Concepts should be familiar if you have programmed before
-{: .slide}
-
 This lesson introduces the core features of JavaScript,
 including how to run programs,
 the language's basic data types,
@@ -60,23 +54,15 @@ All of these concepts should be familiar if you have programmed before.
 
 Use your favorite text editor to put the following line in a file called `hello.js`:
 
-> **Our First Program**
->
-> ```js
-> console.log('hello, world')
-> ```
-> {: title="src/core/hello.js"}
->
-> - `console` is a built-in [module](#g:module) that provides basic printing services
-> - Use `X.Y` to get part `Y` of thing `X`
-> - [Character strings](#g:string) can be single-quoted or double-quoted
-> - Semi-colons at the ends of statements are now (mostly) optional
-{: .slide}
+```js
+console.log('hello, world')
+```
+{: title="src/core/hello.js"}
 
 `console` is a built-in [module](#g:module) that provides basic printing services
 (among other things).
 As in many languages,
-we use `X.Y` to get part `Y` of thing `X`---in this case,
+we use the [dotted notation](#g:dotted-notation) `X.Y` to get part `Y` of thing `X`---in this case,
 to get `console`'s `log` function.
 [Character strings](#g:string) like `'hello, world'` can be written with either single quotes or double quotes,
 so long as the quotation marks match,
@@ -86,16 +72,12 @@ To run a program,
 type <code>node <em>program_name.js</em></code> at the command line.
 (We will preface shell commands with `$` to make them easier to spot.)
 
-> **Running the Program**
-> - Run programs from the command line with <code>node <em>program_name.js</em></code>
->
-> ```sh
-> $ node src/core/hello.js
-> ```
-> ```output
-> hello, world
-> ```
-{: .slide}
+```sh
+$ node src/core/hello.js
+```
+```text
+hello, world
+```
 
 ## Basic Data Types {#s:core-data-types}
 
@@ -108,93 +90,62 @@ We can check this using `typeof`,
 which is an operator, *not* a function,
 and which returns a string:
 
-> **Numbers**
->
-> - JavaScript doesn't have separate types for integers and floating-point
-> - All numbers are 64-bit floating point
->   - Accurate up to 15 digits
-> - `typeof` operator (not function) returns a string
->
-> ```js
-> const aNumber = 123.45
-> console.log('the type of', aNumber, 'is', typeof aNumber)
-> ```
-> {: title="src/core/types.js"}
-> ```output
-> the type of 123.45 is number
-> ```
->
-> ```js
-> const anInteger = 123
-> console.log('the type of', anInteger, 'is', typeof anInteger)
-> ```
-> {: title="src/core/types.js"}
-> ```output
-> the type of 123 is number
-> ```
-{: .slide}
+```js
+const aNumber = 123.45
+console.log('the type of', aNumber, 'is', typeof aNumber)
+```
+{: title="src/core/types.js"}
+```text
+the type of 123.45 is number
+```
+
+```js
+const anInteger = 123
+console.log('the type of', anInteger, 'is', typeof anInteger)
+```
+{: title="src/core/types.js"}
+```text
+the type of 123 is number
+```
 
 We have already met strings,
 which may contain any [Unicode](#g:unicode) character:
 
-> **Strings**
->
-> - Always [Unicode](#g:unicode)
->
-> ```js
-> const aString = 'some text'
-> console.log('the type of', aString, 'is', typeof aString)
-> ```
-> {: title="src/core/types.js"}
-> ```output
-> the type of some text is string
-> ```
-{: .slide}
+```js
+const aString = 'some text'
+console.log('the type of', aString, 'is', typeof aString)
+```
+{: title="src/core/types.js"}
+```text
+the type of some text is string
+```
 
 Functions are also a type of data,
 a fact whose implications we will explore in [a later lesson](./callbacks/):
 
-> **Functions**
->
-> - Functions like `console.log` are things too
-> - Will look at the implications [later](./callbacks/)
->
-> ```js
-> console.log('the type of', console.log, 'is', typeof console.log)
-> ```
-> {: title="src/core/types.js"}
-> ```output
-> the type of function () { [native code] } is function
-> ```
-{: .slide}
+```js
+console.log('the type of', console.log, 'is', typeof console.log)
+```
+{: title="src/core/types.js"}
+```text
+the type of function () { [native code] } is function
+```
 
 Rather than showing the other basic types one by one,
 we will put three values in a list and loop over it:
 
-> **Constants, Lists, and Loops**
->
-> ```js
-> const otherValues = [true, undefined, null]
-> for (let value of otherValues) {
->   console.log('the type of', value, 'is', typeof value)
-> }
-> ```
-> {: title="src/core/types.js"}
-> ```output
-> the type of true is boolean
-> the type of undefined is undefined
-> the type of null is object
-> ```
->
-> - Use `let` to define a [variable](#g:variable)
-> - Use `const` to define a [constant](#g:constant)
-> - `for...of` loops over the values in an array
->   - `of` not `in` (the latter has some [traps](../legacy/#iteration))
->   - Indexing starts from 0 and indentation is optional
-> - `boolean` can be `true` and `false` (though other things can act this way)
-> - `undefined` means "hasn't been given a value"
-> - `null` means "has a value, which is nothing"
-{: .slide}
+```js
+const otherValues = [true, undefined, null]
+for (let value of otherValues) {
+  console.log('the type of', value, 'is', typeof value)
+}
+```
+{: title="src/core/types.js"}
+```text
+the type of true is boolean
+the type of undefined is undefined
+the type of null is object
+```
 
 As the example above shows,
 we use `let` to define a [variable](#g:variable)
@@ -220,32 +171,29 @@ while `null` means "has a value, which is nothing".
 We have already seen `for` loops and flat arrays,
 so let's have a look at conditionals and nested arrays:
 
-> **More Control Flow**
->
-> ```js
-> const values = [[0, 1], ['', 'text'], [undefined, null], [[], [2, 3]]]
-> for (let pair of values) {
->   for (let element of pair) {
->     if (element) {
->       console.log(element, 'of type', typeof element, 'is truthy')
->     } else {
->       console.log(element, 'of type', typeof element, 'is falsy')
->     }
->   }
-> }
-> ```
-> {: title="src/core/control-flow.js"}
-> ```output
-> 0 of type number is falsy
-> 1 of type number is truthy
->  of type string is falsy
-> text of type string is truthy
-> undefined of type undefined is falsy
-> null of type object is falsy
->  of type object is truthy
-> 2,3 of type object is truthy
-> ```
-{: .slide}
+```js
+const values = [[0, 1], ['', 'text'], [undefined, null], [[], [2, 3]]]
+for (let pair of values) {
+  for (let element of pair) {
+    if (element) {
+      console.log(element, 'of type', typeof element, 'is truthy')
+    } else {
+      console.log(element, 'of type', typeof element, 'is falsy')
+    }
+  }
+}
+```
+{: title="src/core/control-flow.js"}
+```text
+0 of type number is falsy
+1 of type number is truthy
+ of type string is falsy
+text of type string is truthy
+undefined of type undefined is falsy
+null of type object is falsy
+ of type object is truthy
+2,3 of type object is truthy
+```
 
 This example shows that arrays are [heterogeneous](#g:heterogeneous),
 i.e.,
@@ -259,17 +207,6 @@ Similarly,
 the empty string is falsy and all other strings are truthy.
 `undefined` and `null` are both falsy,
 as most programmers would expect.
-
-> **Details**
->
-> - Arrays are [heterogeneous](#g:heterogeneous), i.e., can contain values of many different types
->   - Including other arrays
-> - `if` and `else` work as they do in other languages
->   - It's the truthiness that's different
-> - Numbers: 0 is [falsy](#g:falsy), all others are [truthy](#g:truthy)
-> - Strings: empty string is falsy, all others are truthy
-> - `undefined` and `null` are both falsy
-{: .slide}
 
 But as the last two lines of output show,
 an empty array is truthy,
@@ -291,17 +228,7 @@ not called like a function.)
 > `==` and `!=` do type conversion,
 > which can produce some [ugly surprises](../legacy/#equality).
 
-> **Empty Arrays**
->
-> - But an empty array is truthy
->   - Argument is that there's something there, it just happens to be empty
-> - Test `Array.length` instead
->   - This is a [property](#g:property), not a [method](#g:method)
-> - **Always** use `===` and `!==` when testing for (in)equality
->   - `==` and `!=` contain [some ugly surprises](../legacy/#equality)
-{: .slide}
-
-## Formatting {#s:core-formatting}
+## Formatting Strings {#s:core-formatting}
 
 Rather than printing multiple strings and expressions,
 we can [interpolate](#g:interpolation) values into a back-quoted string.
@@ -312,27 +239,29 @@ the value to be interpolated is put in `${...}`,
 and can be any valid JavaScript expression,
 including a function or method call.
 
-> **String Interpolation**
->
-> - Use back quotes to create multi-line strings
-> - Interpolate values in these strings using `${expression}`
-> - Interpolations can be expressions (including function calls)
->
-> ```js
-> for (let color of ['red', 'green', 'blue']) {
->   const message = `color is ${color}`
->   console.log(message, `and capitalized is ${color.toUpperCase()}`)
-> }
-> ```
-> {: title="src/core/formatting.js"}
-> ```output
-> color is red and capitalized is RED
-> color is green and capitalized is GREEN
-> color is blue and capitalized is BLUE
-> ```
-{: .slide}
+```js
+for (let color of ['red', 'green', 'blue']) {
+  const message = `color is ${color}`
+  console.log(message, `and capitalized is ${color.toUpperCase()}`)
+}
+```
+{: title="src/core/formatting.js"}
+```text
+color is red and capitalized is RED
+color is green and capitalized is GREEN
+color is blue and capitalized is BLUE
+```
 
 ## Objects {#s:core-objects}
+
+An [object](#g:object) in JavaScript is a collection of key-value pairs,
+and is equivalent in simple cases to what Python would call a dictionary.
+The keys do not have to be strings,
+but almost always are;
+the values can be anything.
+We can create an object by putting key-value pairs in curly brackets
+with colons between the keys and values
+and commas between the pairs:
 
 ```js
 const creature = {
@@ -349,7 +278,7 @@ for (let key in creature) {
 }
 ```
 {: title="src/core/objects.js"}
-```output
+```text
 creature is [object Object]
 creature.genus is Callithrix
 creature[order] is Primates
@@ -358,18 +287,31 @@ creature[genus] is Callithrix
 creature[species] is Jacchus
 ```
 
-- An [object](#g:object) is a collection of key/value pairs
-  - Keys do not have to be strings, but almost always are
-  - Values can be anything
-- Create an object by putting key/value pairs in curly brackets
-- Type of object is always `object`
-- Can always get a value using `object[key]`
-- If the key has a simple name, can use `object.key` instead
-  - The square bracket form can be used with variables for keys
-  - The [dotted notation](#g:dotted-notation) cannot
-- Can write keys without quotes
-  - In which case they are treated as strings
-- To get string representation of whole object, try `JSON.stringify(object)`
+The type of an object is always `object`.
+We can get the value associated with a key using `object[key]`,
+but if the key has a simple name,
+we can use `object.key` instead.
+Note that the square bracket form can be used with variables for keys,
+but the dotted notation cannot:
+i.e.,
+`creature.genus` is the same as `creature['genus']`,
+but the assignment `g = 'genus'` followed by `creature.g` does not work.
+
+`[object Object]` is not particularly useful output when we want to see what an object contains.
+To get a ore helpful string representation,
+use `JSON.stringify(object)`:
+
+```js
+console.log(JSON.stringify(creature))
+```
+{: title="src/core/objects.js"}
+```text
+{"order":"Primates","family":"Callitrichidae","genus":"Callithrix","species":"Jacchus"}
+```
+
+Here,
+"JSON" stands for "JavaScript Object Notation";
+we will learn more about it [later](../interactive/).
 
 ## Functions {#s:core-functions}
 
@@ -412,7 +354,7 @@ for (let test of allTests) {
 }
 ```
 {: title="src/core/functions-classic.js"}
-```output
+```text
 limits of  are ,
 limits of 9 are 9,9
 limits of 3,30,300 are 3,300
@@ -491,7 +433,7 @@ const result = utilities.clip(data)
 console.log(`clip(${data}) -> ${result}`)
 ```
 {: title="src/core/import.js"}
-```output
+```text
 clip(-1,5,3,0,10) -> 0,1,2,3
 ```
 
@@ -538,7 +480,7 @@ for (let line of table) {
 }
 ```
 {: title="ex/core/table-of-squares.js"}
-```output
+```text
 square of 4 is 16
 square of 3 is 9
 square of 2 is 4
@@ -595,7 +537,7 @@ const creature = {genus, species}
 console.log(creature)
 ```
 {: title="ex/core/implied.js"}
-```output
+```text
 { genus: 'Callithrix', species: 'Jacchus' }
 ```
 
