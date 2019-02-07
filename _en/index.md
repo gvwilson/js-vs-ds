@@ -1,7 +1,7 @@
 ---
-permalink: "/en/"
 root: true
 redirect_from: "/"
+permalink: "/en/"
 ---
 
 We were going to call this book *JavaScript for Scientists and Engineers*,
@@ -26,7 +26,7 @@ We will cover:
 - Data visualization
 - Combining everything to create a three-tier web application
 
-## Intended Audience {#s:intro-audience}
+## Intended Audience {#s:index-audience}
 
 We assume that you:
 
@@ -40,9 +40,5 @@ We give each topic only shallow coverage;
 if you want to know more,
 there are many other free tutorials you can dive into once you've mastered the basics,
 some of which are both up-to-date and well designed.
-
-## Contributing {#s:intro-contrib}
-
-{% include contributing.md %}
 
 {% include links.md %}
